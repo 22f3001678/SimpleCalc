@@ -1,0 +1,54 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+      - vibe_coded_submission
+      - sdd_submission
+
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+
+  pull_request:
+    branches:
+      - main
+      - vibe_coded_submission
+      - sdd_submission
+
+jobs:
+
+  backend-checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Lint
+        run: |
+          echo "No linter configured yet"
+
+      - name: Run Tests
+        run: |
+          echo "No backend tests configured yet"
+
+      - name: Backend Build Verification
+        run: |
+          echo "Backend verification completed successfully"

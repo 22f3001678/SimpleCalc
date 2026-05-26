@@ -1,0 +1,53 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - main
+      - vibe_coded_submission
+      - sdd_submission
+
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+
+  pull_request:
+    branches:
+      - main
+      - vibe_coded_submission
+      - sdd_submission
+
+jobs:
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Lint
+        run: |
+          echo "No linter configured yet"
+
+      - name: Run Tests
+        run: |
+          echo "No frontend tests configured yet"
+
+      - name: Build Frontend
+        run: npm run build
