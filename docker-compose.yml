@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+
+  frontend:
+    container_name: simplecalc-frontend
+
+    build:
+      context: ./frontend
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    stdin_open: true
+    tty: true
+
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+    depends_on:
+      - backend
+
+  backend:
+    container_name: simplecalc-backend
+
+    build:
+      context: ./backend
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+    environment:
+      - PORT=5000
+      - NODE_ENV=development
+
+    stdin_open: true
+    tty: true
