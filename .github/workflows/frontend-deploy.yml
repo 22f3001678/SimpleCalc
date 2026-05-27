@@ -3,6 +3,7 @@ name: Frontend Build & Deploy to GitHub Pages
 on:
   push:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build-deploy:
@@ -28,6 +29,11 @@ jobs:
         run: |
           cd frontend
           npm run build
+      - name: Optionally configure CNAME (custom domain)
+        if: ${{ secrets.PUBLIC_DOMAIN != '' }}
+        run: |
+          cd frontend/dist || exit 0
+          echo "${{ secrets.PUBLIC_DOMAIN }}" > CNAME
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

@@ -11,4 +11,10 @@ export default defineConfig({
     open: true,
     cors: true,
   },
+  build: {
+    // Emit a manifest and use hashed asset filenames (Vite default) to support cache-busting
+    manifest: true,
+    sourcemap: false,
+    assetsInlineLimit: 4096,
+  },
 });

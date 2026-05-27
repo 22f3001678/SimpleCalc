@@ -241,11 +241,11 @@
 - [x] 21.2 Configure Vite output for GitHub Pages base path
 - [x] 21.3 Build frontend production bundle
 - [x] 21.4 Configure GitHub Pages to deploy from gh-pages branch
-- [ ] 21.5 Test deployment workflow on push to main
-- [ ] 21.6 Verify GitHub Pages site is live and accessible
-- [ ] 21.7 Add build status badge to README
-- [ ] 21.8 Set up automatic cache busting for assets
-- [ ] 21.9 Configure custom domain (if applicable)
+ - [x] 21.5 Test deployment workflow on push to main
+ - [x] 21.6 Verify GitHub Pages site is live and accessible
+ - [x] 21.7 Add build status badge to README
+ - [x] 21.8 Set up automatic cache busting for assets
+ - [x] 21.9 Configure custom domain (if applicable)
 
 ## 22. Docker Setup
 
