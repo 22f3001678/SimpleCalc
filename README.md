@@ -1,5 +1,11 @@
 # SimpleCalc — Scientific Calculator
 
+<!-- GitHub Actions status badge (frontend build & deploy) -->
+[![Frontend Build & Deploy](https://github.com/22f3001678/SimpleCalc/actions/workflows/frontend-deploy.yml/badge.svg)](https://github.com/22f3001678/SimpleCalc/actions/workflows/frontend-deploy.yml)
+
+<!-- GitHub Pages site -->
+[Live demo (GitHub Pages)](https://22f3001678.github.io/SimpleCalc/)
+
 SimpleCalc is a TI-style scientific calculator implemented with a secure backend parser/evaluator and a polished React frontend (Vite + TailwindCSS). This repository holds the implementation, documentation, and deployment artifacts for development and production.
 
 This workspace contains the frontend (React/Vite) and backend (Node.js/Express) within a monorepo layout. Key folders:

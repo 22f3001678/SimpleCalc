@@ -1,0 +1,25 @@
+name: Verify GitHub Pages
+
+on:
+  push:
+    branches: [ gh-pages ]
+  workflow_dispatch:
+
+jobs:
+  verify-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Pages URL is reachable
+        run: |
+          URL="https://22f3001678.github.io/SimpleCalc/"
+          echo "Verifying $URL"
+          # retry a few times to account for propagation
+          n=0; until [ $n -ge 6 ]; do
+            if curl -fsSL -o /dev/null -w "%{http_code}" "$URL" | grep -q "200"; then
+              echo "Pages site is reachable"; exit 0
+            fi
+            n=$((n+1))
+            echo "Attempt $n failed; retrying in 10s..."
+            sleep 10
+          done
+          echo "Pages site did not respond with HTTP 200"; exit 1
