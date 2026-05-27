@@ -225,15 +225,15 @@
 
 ## 20. Documentation
 
-- [ ] 20.1 Create CONTRIBUTING.md for developers
-- [x] 20.2 Document API endpoint (POST /api/calculate)
-- [x] 20.3 Document supported functions and constants
-- [x] 20.4 Create keyboard shortcuts reference
-- [ ] 20.5 Create troubleshooting guide
-- [x] 20.6 Document calculator precision and limitations
-- [x] 20.7 Add inline code comments for complex logic
-- [x] 20.8 Create deployment documentation
-- [x] 20.9 Create architecture overview document
+ - [x] 20.1 Create CONTRIBUTING.md for developers
+ - [x] 20.2 Document API endpoint (POST /api/calculate)
+ - [x] 20.3 Document supported functions and constants
+ - [x] 20.4 Create keyboard shortcuts reference
+ - [x] 20.5 Create troubleshooting guide
+ - [x] 20.6 Document calculator precision and limitations
+ - [x] 20.7 Add inline code comments for complex logic
+ - [x] 20.8 Create deployment documentation
+ - [x] 20.9 Create architecture overview document
 
 ## 21. GitHub Pages Deployment
 
