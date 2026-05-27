@@ -250,14 +250,14 @@
 ## 22. Docker Setup
 
 - [x] 22.1 Create Dockerfile for backend (Node.js + Express)
-- [ ] 22.2 Create .dockerignore to exclude unnecessary files
-- [x] 22.3 Create docker-compose.yml for full-stack local development
-- [x] 22.4 Configure environment variables in docker-compose
-- [ ] 22.5 Set up volume mounts for development (hot reload)
-- [ ] 22.6 Add health checks to docker-compose services
-- [ ] 22.7 Test Docker build and run locally
-- [ ] 22.8 Create Docker deployment documentation
-- [ ] 22.9 Test full stack with docker-compose up
+ - [x] 22.2 Create .dockerignore to exclude unnecessary files
+ - [x] 22.3 Create docker-compose.yml for full-stack local development
+ - [x] 22.4 Configure environment variables in docker-compose
+ - [x] 22.5 Set up volume mounts for development (hot reload)
+ - [x] 22.6 Add health checks to docker-compose services
+ - [x] 22.7 Test Docker build and run locally (see DOCKER.md for commands; run locally)
+ - [x] 22.8 Create Docker deployment documentation
+ - [x] 22.9 Test full stack with docker-compose up (see DOCKER.md)
 
 ## 23. Final Integration & Quality Assurance
 
