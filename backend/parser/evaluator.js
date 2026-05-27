@@ -1,22 +1,25 @@
 import { CalculationError, ParseError } from './errors.js';
 
+const toRadians = (value, angleMode) => (angleMode === 'degrees' ? (value * Math.PI) / 180 : value);
+const fromRadians = (value, angleMode) => (angleMode === 'degrees' ? (value * 180) / Math.PI : value);
+
 const FUNCTION_MAP = {
-  SIN: (value) => Math.sin(value),
-  COS: (value) => Math.cos(value),
-  TAN: (value) => Math.tan(value),
-  ASIN: (value) => {
+  SIN: (value, options) => Math.sin(toRadians(value, options.angleMode)),
+  COS: (value, options) => Math.cos(toRadians(value, options.angleMode)),
+  TAN: (value, options) => Math.tan(toRadians(value, options.angleMode)),
+  ASIN: (value, options) => {
     if (value < -1 || value > 1) {
       throw new CalculationError('asin argument must be between -1 and 1');
     }
-    return Math.asin(value);
+    return fromRadians(Math.asin(value), options.angleMode);
   },
-  ACOS: (value) => {
+  ACOS: (value, options) => {
     if (value < -1 || value > 1) {
       throw new CalculationError('acos argument must be between -1 and 1');
     }
-    return Math.acos(value);
+    return fromRadians(Math.acos(value), options.angleMode);
   },
-  ATAN: (value) => Math.atan(value),
+  ATAN: (value, options) => fromRadians(Math.atan(value), options.angleMode),
   LOG: (value) => {
     if (value <= 0) {
       throw new CalculationError('log argument must be greater than zero');
@@ -38,7 +41,7 @@ const FUNCTION_MAP = {
   ABS: (value) => Math.abs(value),
 };
 
-export function evaluateAst(node) {
+export function evaluateAst(node, options = { angleMode: 'radians' }) {
   if (!node || typeof node !== 'object') {
     throw new ParseError('AST node is invalid');
   }
@@ -49,7 +52,7 @@ export function evaluateAst(node) {
       return Number(node.value);
 
     case 'UnaryExpression': {
-      const value = evaluateAst(node.operand);
+      const value = evaluateAst(node.operand, options);
       switch (node.operator) {
         case 'NEGATE':
           return -value;
@@ -61,18 +64,18 @@ export function evaluateAst(node) {
     }
 
     case 'BinaryExpression': {
-      const left = evaluateAst(node.left);
-      const right = evaluateAst(node.right);
+      const left = evaluateAst(node.left, options);
+      const right = evaluateAst(node.right, options);
       return evaluateBinaryExpression(node.operator, left, right);
     }
 
     case 'FunctionCall': {
-      const value = evaluateAst(node.argument);
+      const value = evaluateAst(node.argument, options);
       const fn = FUNCTION_MAP[node.name];
       if (!fn) {
         throw new CalculationError(`Unsupported function '${node.name}'`);
       }
-      return fn(value);
+      return fn(value, options);
     }
 
     default:

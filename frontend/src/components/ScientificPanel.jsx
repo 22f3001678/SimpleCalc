@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalculatorButton } from './CalculatorButton.jsx';
 import { memo } from 'react';
 const scientificActions = [

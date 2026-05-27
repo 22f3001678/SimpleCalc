@@ -12,7 +12,7 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = usePersistentState('simplecalc_history', []);
   const [memory, setMemory] = usePersistentState('simplecalc_memory', 0);
-  const [theme, setTheme] = usePersistentState('simplecalc_theme', 'dark');
+  const [angleMode, setAngleMode] = usePersistentState('simplecalc_angle_mode', 'radians');
 
   const updateExpression = useCallback((nextValue) => {
     setExpression((current) => {
@@ -46,7 +46,7 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
     setError('');
 
     try {
-      const response = await calculateExpression(expression.trim());
+      const response = await calculateExpression(expression.trim(), angleMode);
       setResult(response.result);
       setHistory((currentHistory) => [
         {
@@ -57,12 +57,13 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
         ...currentHistory,
       ].slice(0, MAX_HISTORY_LENGTH));
     } catch (err) {
-      // Map some common backend errors to friendlier messages
       const message = err?.message || '';
       if (message.includes('division by zero') || message.toLowerCase().includes('divide by zero')) {
         setError('Division by zero is not allowed.');
       } else if (message.includes('Cannot have two operators')) {
         setError('Invalid sequence: you have two operators in a row.');
+      } else if (message.toLowerCase().includes('timeout')) {
+        setError('Calculation timed out. Please try again.');
       } else {
         setError(message || 'Unable to evaluate expression');
       }
@@ -70,7 +71,7 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
     } finally {
       setLoading(false);
     }
-  }, [expression, setHistory]);
+  }, [angleMode, expression, setHistory]);
 
   const reuseHistory = useCallback((nextExpression) => {
     setExpression(nextExpression);
@@ -80,6 +81,27 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
   const clearHistory = useCallback(() => {
     setHistory([]);
   }, [setHistory]);
+
+  const deleteHistoryEntry = useCallback(
+    (timestamp) => {
+      setHistory((currentHistory) => currentHistory.filter((entry) => entry.timestamp !== timestamp));
+    },
+    [setHistory],
+  );
+
+  const copyHistoryEntry = useCallback(
+    async (entry) => {
+      try {
+        const text = `${entry.expression} = ${entry.result}`;
+        await navigator.clipboard.writeText(text);
+        setError('History item copied to clipboard.');
+        window.setTimeout(() => setError(''), 2000);
+      } catch {
+        setError('Unable to copy to clipboard.');
+      }
+    },
+    [],
+  );
 
   const recallMemory = useCallback(() => {
     setExpression((current) => (current.trim() ? `${current}${memory}` : String(memory)));
@@ -118,9 +140,9 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
     setMemory(0);
   }, [setMemory]);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
-  }, [setTheme]);
+  const toggleAngleMode = useCallback(() => {
+    setAngleMode((current) => (current === 'degrees' ? 'radians' : 'degrees'));
+  }, [setAngleMode]);
 
   return {
     expression,
@@ -129,17 +151,19 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
     loading,
     history,
     memory,
-    theme,
+    angleMode,
     updateExpression,
     resetExpression,
     deleteLastCharacter,
     evaluateExpression,
     reuseHistory,
     clearHistory,
+    deleteHistoryEntry,
+    copyHistoryEntry,
     recallMemory,
     addMemory,
     subtractMemory,
     clearMemory,
-    toggleTheme,
+    toggleAngleMode,
   };
 }

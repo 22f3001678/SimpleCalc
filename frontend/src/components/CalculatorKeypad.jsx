@@ -1,8 +1,9 @@
+import React from 'react';
 import { CalculatorButton } from './CalculatorButton.jsx';
 import { keypadGroups } from '../utils/keypad.js';
 import { memo } from 'react';
 
-function _CalculatorKeypad({ onButtonClick }) {
+function _CalculatorKeypad({ onButtonClick, reduceMotion = false }) {
   return (
     <div className="space-y-4">
       {keypadGroups.map((group) => (
@@ -21,6 +22,7 @@ function _CalculatorKeypad({ onButtonClick }) {
                 label={button.label}
                 variant={button.variant}
                 onClick={() => onButtonClick(button.value)}
+                reduceMotion={reduceMotion}
               />
             ))}
           </div>

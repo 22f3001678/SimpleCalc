@@ -16,14 +16,16 @@ function formatResult(value) {
 
 export const calculateHandler = async (req, res) => {
   const expression = req.expression;
+  const angleMode = req.angleMode || 'radians';
 
+  const start = Date.now();
   const tokenStream = tokenize(expression);
   const validator = new TokenValidator(tokenStream.tokens, expression);
   validator.validate();
 
   const parser = new Parser(tokenStream, expression);
   const ast = parser.parse();
-  const rawResult = evaluateAst(ast);
+  const rawResult = evaluateAst(ast, { angleMode });
   const result = formatResult(rawResult);
 
   res.json({
@@ -31,5 +33,7 @@ export const calculateHandler = async (req, res) => {
     result,
     rawResult,
     precision: DEFAULT_DECIMAL_PLACES,
+    angleMode,
+    durationMs: Date.now() - start,
   });
 };

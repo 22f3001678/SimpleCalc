@@ -1,11 +1,14 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 
-export function MemoryPanel({ memory, onMemoryAdd, onMemorySubtract, onMemoryRecall, onMemoryClear }) {
+export function MemoryPanel({ memory, onMemoryAdd, onMemorySubtract, onMemoryRecall, onMemoryClear, reduceMotion = false }) {
+  const memoryMotion = reduceMotion
+    ? { initial: false, animate: { opacity: 1, y: 0 }, transition: { duration: 0 } }
+    : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.35 } };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
+      {...memoryMotion}
       className="rounded-[2rem] border border-slate-800 bg-slate-950/80 p-6 shadow-soft backdrop-blur"
     >
       <div>
