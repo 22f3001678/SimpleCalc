@@ -1,5 +1,5 @@
 import { CalculatorButton } from './CalculatorButton.jsx';
-
+import { memo } from 'react';
 const scientificActions = [
   { label: 'sin(', value: 'sin(' },
   { label: 'cos(', value: 'cos(' },
@@ -43,3 +43,5 @@ export function ScientificPanel({ onInsert }) {
     </div>
   );
 }
+
+export default memo(ScientificPanel);

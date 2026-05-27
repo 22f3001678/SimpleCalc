@@ -288,13 +288,17 @@ The server starts on `http://localhost:3001` by default.
 
 ### Environment Variables
 
+Configure runtime behavior via `backend/.env` or environment variables. Example values are available in `.env.example`.
+
 ```
-NODE_ENV=development              # development or production
-PORT=3001                         # Server port
-CORS_ORIGIN=http://localhost:5173 # Frontend URL
-LOG_LEVEL=info                    # debug, info, warn, error
-MAX_EXPRESSION_LENGTH=1000        # Max input length
-MAX_DEPTH=50                      # Max nesting depth
+NODE_ENV=development
+PORT=3001
+# CORS_ORIGIN accepts a comma-separated list of allowed origins for browser requests
+# Example for local dev: http://localhost:5173,http://localhost:4173
+CORS_ORIGIN=http://localhost:5173,http://localhost:4173
+LOG_LEVEL=info
+MAX_EXPRESSION_LENGTH=1000
+MAX_DEPTH=50
 ```
 
 ---
@@ -376,6 +380,25 @@ curl -X POST http://localhost:3001/api/calculate \
   -H "Content-Type: application/json" \
   -d '{"expression":"5 + 3"}'
 ```
+
+## Docker
+
+Build and run the backend in a container:
+
+```bash
+cd backend
+docker build -t simplecalc-backend .
+docker run -p 3001:3001 --env-file .env simplecalc-backend
+```
+
+Or use the top-level `docker-compose.yml` to run both frontend and backend together.
+
+## CI / Deployment
+
+- CI workflows are included in `.github/workflows/`:
+  - `backend-ci.yml` runs lint and tests on push/pull requests.
+  - `frontend-deploy.yml` builds and deploys the `frontend/dist` folder to `gh-pages`.
+
 
 (Full /api/calculate implementation coming in Phase 5)
 

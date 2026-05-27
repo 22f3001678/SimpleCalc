@@ -1,12 +1,16 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
-export function CalculatorDisplay({ expression, result, error, loading }) {
+function _CalculatorDisplay({ expression, result, error, loading }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       className="space-y-4 rounded-[2rem] border border-slate-800 bg-slate-950/80 p-6 shadow-soft backdrop-blur"
+      role="region"
+      aria-live="polite"
+      aria-busy={loading}
     >
       <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-5 text-slate-100 shadow-inner">
         <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Expression</p>
@@ -18,11 +22,11 @@ export function CalculatorDisplay({ expression, result, error, loading }) {
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-inner">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Result</p>
-          <p className="mt-4 text-4xl font-semibold text-slate-100">{loading ? 'Loading…' : result ?? '—'}</p>
+          <p role="status" aria-live="polite" className="mt-4 text-4xl font-semibold text-slate-100">{loading ? 'Loading…' : result ?? '—'}</p>
         </div>
         <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-inner">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Status</p>
-          <p className={`mt-4 text-lg font-semibold ${error ? 'text-rose-300' : 'text-cyan-300'}`}>
+          <p className={`mt-4 text-lg font-semibold ${error ? 'text-rose-300' : 'text-cyan-300'}`} aria-live="polite">
             {error || (loading ? 'Evaluating expression' : 'Ready for input')}
           </p>
         </div>
@@ -37,3 +41,5 @@ export function CalculatorDisplay({ expression, result, error, loading }) {
     </motion.div>
   );
 }
+
+export const CalculatorDisplay = memo(_CalculatorDisplay);

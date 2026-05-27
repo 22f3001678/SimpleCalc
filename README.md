@@ -1,22 +1,15 @@
-# T1 Scientific Calculator
+# SimpleCalc — Scientific Calculator
 
-A modern React + TailwindCSS scientific calculator inspired by classic T1/TI-style calculators.
+SimpleCalc is a TI-style scientific calculator implemented with a secure backend parser/evaluator and a polished React frontend (Vite + TailwindCSS). This repository holds the implementation, documentation, and deployment artifacts for development and production.
 
-This repository contains two separate implementations of the calculator project:
+This workspace contains the frontend (React/Vite) and backend (Node.js/Express) within a monorepo layout. Key folders:
 
-- `vibe_coded_submission`
-  - Rapidly developed "vibe-coded" implementation
-  - Focused on UI, animations, responsiveness, and fast iteration
+- `frontend/` — React app (Vite + TailwindCSS, supports GitHub Pages deployment)
+- `backend/` — Node.js + Express API (secure tokenizer, validator, evaluator pipeline)
+- `.github/workflows/` — CI workflows for tests, build, and deploy
+- `docker-compose.yml` — local production-like run of backend + frontend
 
-- `sdd_submission`
-  - Structured implementation developed using OpenSpec / Software Design Documentation workflow
-  - Focused on maintainability, architecture, and engineering practices
-
-The `main` branch contains:
-- Documentation
-- Project overview
-- Setup instructions
-- Submission details
+The `sdd_submission` branch contains the structured implementation used for submissions and formal review.
 
 ---
 
@@ -89,87 +82,57 @@ sdd_submission
 
 ---
 
-# Getting Started
 
-Clone the repository:
+## Getting started (development)
+
+Clone the repository and install dependencies for both packages:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/t1-calculator.git
+git clone <repo-url>
+cd SimpleCalc
 ```
 
-Move into the project:
+Install and run backend and frontend separately during development:
 
+Backend
 ```bash
-cd t1-calculator
-```
-
-Switch to a branch:
-
-```bash
-git checkout vibe_coded_submission
-```
-
-or
-
-```bash
-git checkout sdd_submission
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run development server:
-
-```bash
+cd backend
+npm ci
 npm run dev
+# server: http://localhost:3001
 ```
+
+Frontend
+```bash
+cd frontend
+npm ci
+npm run dev
+# dev server: http://localhost:4173
+```
+
+Environment is configurable via `backend/.env` and `frontend/.env` or environment variables. Example values are provided in `.env.example`.
 
 ---
 
-# GitHub Pages Deployment
 
-Install deployment dependency:
+## Build & deployment
 
+Production build (frontend)
 ```bash
-npm install gh-pages --save-dev
-```
-
-Update `package.json`:
-
-```json
-"homepage": "https://YOUR_USERNAME.github.io/t1-calculator"
-```
-
-Add deploy scripts:
-
-```json
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "deploy": "gh-pages -d dist"
-}
-```
-
-Update `vite.config.js`:
-
-```js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  base: "/t1-calculator/"
-})
-```
-
-Deploy:
-
-```bash
+cd frontend
 npm run build
-npm run deploy
+# output: frontend/dist/
+```
+
+GitHub Pages
+- `VITE_BASE` controls the base path in `vite.config.js`. For GitHub Pages set `VITE_BASE` to `/<repo-name>/` and configure `.github/workflows/frontend-deploy.yml` (already included) to publish `frontend/dist` to the `gh-pages` branch.
+
+Docker (local production-like)
+```bash
+docker-compose build
+docker-compose up
+# frontend: http://localhost:8080
+# backend: http://localhost:3001
 ```
 
 ---
@@ -187,16 +150,26 @@ npm run deploy
 
 ---
 
-# Future Improvements
 
-- Graph plotting
-- Persistent history
-- Better expression parser
-- Keyboard shortcuts
-- PWA support
-- Matrix operations
-- Equation solver
-- Multiple calculator themes
+## Accessibility & QA
+
+- The UI includes ARIA live regions and keyboard support; `:focus-visible` styles are provided for keyboard users.
+- Reduced-motion preference is respected via `prefers-reduced-motion` CSS rules.
+- Touch targets and button sizing have been optimized for mobile devices.
+
+## Testing
+
+- Frontend: Vitest + Testing Library (placeholder tests included). Run with `cd frontend && npm run test`.
+- Backend: Jest + Supertest (placeholder tests included). Run with `cd backend && npm test`.
+
+## Contributing & development notes
+
+- Update `backend/.env` `CORS_ORIGIN` with comma-separated origins for local dev (e.g. `http://localhost:5173,http://localhost:4173`).
+- Use `npm run build` in `frontend` to verify production build before deploying.
+
+---
+
+For more detailed developer tasks and the design rationale see `openspec/changes/simplecalc/` and `QUICK_REFERENCE.md`.
 
 ---
 

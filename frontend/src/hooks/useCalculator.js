@@ -57,7 +57,15 @@ export function useCalculator(initialExpression = INITIAL_EXPRESSION) {
         ...currentHistory,
       ].slice(0, MAX_HISTORY_LENGTH));
     } catch (err) {
-      setError(err.message || 'Unable to evaluate expression');
+      // Map some common backend errors to friendlier messages
+      const message = err?.message || '';
+      if (message.includes('division by zero') || message.toLowerCase().includes('divide by zero')) {
+        setError('Division by zero is not allowed.');
+      } else if (message.includes('Cannot have two operators')) {
+        setError('Invalid sequence: you have two operators in a row.');
+      } else {
+        setError(message || 'Unable to evaluate expression');
+      }
       setResult(null);
     } finally {
       setLoading(false);

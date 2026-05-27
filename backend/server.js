@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import calculateRouter from './routes/calculate.js';
-import { requestLogger, detailedRequestLogger } from './middleware/logger.js';
+import { requestLogger, detailedRequestLogger, log } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -16,14 +16,34 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // CORS Configuration
 // ============================================================================
 // Allow requests from frontend (adjust for production)
+// Support comma-separated CORS_ORIGIN env var or sensible dev defaults.
+const rawOrigins = process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:4173,http://localhost:8080';
+const allowedOrigins = rawOrigins.split(',').map((s) => s.trim()).filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: (origin, cb) => {
+    // Allow non-browser requests (e.g., curl, server-to-server)
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error(`CORS policy: origin ${origin} not allowed`), false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 };
 
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  // Wrap cors middleware to handle errors gracefully and surface helpful messages
+  return cors(corsOptions)(req, res, (err) => {
+    if (err) {
+      // Log and respond with a CORS-friendly error
+      log.warn('[CORS] Rejected origin', { origin: req.get('origin') });
+      res.status(403).json({ error: 'CORS origin not allowed' });
+      return;
+    }
+    next();
+  });
+});
 
 // ============================================================================
 // Body Parser Middleware
@@ -91,30 +111,26 @@ app.use(errorHandler);
 // Server Startup
 // ============================================================================
 const server = app.listen(PORT, () => {
-  console.log(`
-╔════════════════════════════════════════╗
-║     SimpleCalc Backend Server         ║
-╠════════════════════════════════════════╣
-║ Environment:   ${NODE_ENV.padEnd(26)}║
-║ Port:          ${PORT.toString().padEnd(26)}║
-║ CORS Origin:   ${(process.env.CORS_ORIGIN || 'http://localhost:5173').substring(0, 26).padEnd(26)}║
-╚════════════════════════════════════════╝
-  `);
+  log.info('SimpleCalc Backend Server started', {
+    environment: NODE_ENV,
+    port: PORT,
+    corsOrigins: allowedOrigins,
+  });
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+  log.info('SIGTERM signal received: closing HTTP server');
   server.close(() => {
-    console.log('HTTP server closed');
+    log.info('HTTP server closed');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT signal received: closing HTTP server');
+  log.info('SIGINT signal received: closing HTTP server');
   server.close(() => {
-    console.log('HTTP server closed');
+    log.info('HTTP server closed');
     process.exit(0);
   });
 });

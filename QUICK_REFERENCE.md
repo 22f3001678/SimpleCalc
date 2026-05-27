@@ -1,7 +1,7 @@
 # SimpleCalc Development Quick Reference
 
 **Project Status:** Phase 1 Complete ✅  
-**Last Updated:** May 27, 2025
+**Last Updated:** May 27, 2026
 
 ---
 
@@ -40,6 +40,23 @@ node parser/test-tokenizer.js
 # Server runs on http://localhost:3001
 # Health check: curl http://localhost:3001/health
 ```
+
+---
+
+## 🚢 Deployment & CI
+
+- **Docker (local)**: Build and run backend and frontend together:
+
+```bash
+docker-compose build
+docker-compose up
+```
+
+- **GitHub Pages**: Frontend is deployed from `gh-pages` branch by CI workflow `.github/workflows/frontend-deploy.yml`.
+
+- **CI**: Backend CI pipeline runs tests and linting (`.github/workflows/backend-ci.yml`).
+
+Note: For local development ensure `backend/.env` contains a comma-separated `CORS_ORIGIN` list matching your frontend dev URL(s) (e.g. `http://localhost:5173,http://localhost:4173`).
 
 ---
 
@@ -115,6 +132,24 @@ node -e "import('./parser/tokenizer.js').then(m => m.tokenize('5 + 3'))"
 npm test
 npm run test:parser
 npm run test:watch
+```
+
+### Running Tests Locally
+
+- Frontend (example using React Testing Library / Vitest):
+
+```bash
+cd frontend
+npm ci
+npm test
+```
+
+- Backend (example using Jest / Supertest):
+
+```bash
+cd backend
+npm ci
+npm test
 ```
 
 ---
