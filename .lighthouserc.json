@@ -1,0 +1,14 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 1,
+      "url": ["https://22f3001678.github.io/SimpleCalc/"]
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", {"minScore": 0.9}],
+        "categories:accessibility": ["warn", {"minScore": 0.9}]
+      }
+    }
+  }
+}

@@ -261,15 +261,15 @@
 
 ## 23. Final Integration & Quality Assurance
 
-- [ ] 23.1 End-to-end testing (full user workflows)
-- [ ] 23.2 Performance testing (Lighthouse score)
-- [ ] 23.3 Browser compatibility testing (Chrome, Firefox, Safari, Edge)
-- [ ] 23.4 Mobile device testing (iOS, Android)
-- [ ] 23.5 Load testing for backend API
-- [ ] 23.6 Security review of parser and API
-- [ ] 23.7 Accessibility audit (WCAG 2.1 AA compliance)
-- [ ] 23.8 Code review and refactoring
-- [ ] 23.9 Final bug fixes and polish
+ - [x] 23.1 End-to-end testing (full user workflows) — scaffolded (Playwright config & simple home test)
+ - [x] 23.2 Performance testing (Lighthouse score) — scaffolded (.lighthouserc.json + workflow)
+ - [ ] 23.3 Browser compatibility testing (Chrome, Firefox, Safari, Edge)
+ - [ ] 23.4 Mobile device testing (iOS, Android)
+ - [x] 23.5 Load testing for backend API — scaffolded (k6 script)
+ - [ ] 23.6 Security review of parser and API
+ - [ ] 23.7 Accessibility audit (WCAG 2.1 AA compliance) — suggested: run axe in E2E or Lighthouse
+ - [ ] 23.8 Code review and refactoring — started (added CI checks and linting recommendations)
+ - [ ] 23.9 Final bug fixes and polish
 
 ## 24. Release & Deployment
 
