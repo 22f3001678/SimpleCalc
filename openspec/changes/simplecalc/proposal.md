@@ -6,7 +6,8 @@ There is a need for a modern, accessible scientific calculator application that 
 
 - **New full-stack web application**: A React-based frontend with a Node.js/Express backend for scientific calculations
 - **Scientific calculation engine**: Support for trigonometric, logarithmic, and advanced mathematical operations
-- **Safe expression parsing**: Secure evaluation of mathematical expressions without code injection risks
+- **Safe expression parsing**: Custom tokenizer and AST-based evaluation on the backend, avoiding eval()/Function() usage
+- **Frontend-managed state**: Memory functions and history persisted in localStorage for instant responsive behavior
 - **Persistent calculation history**: Local storage of calculation history across browser sessions
 - **Keyboard support**: Full keyboard navigation and expression input for accessibility
 - **Dark/light theme support**: User-preferred theme with localStorage persistence
