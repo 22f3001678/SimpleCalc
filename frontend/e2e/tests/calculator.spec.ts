@@ -4,7 +4,7 @@ test('calculator evaluates a simple expression', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: '2' }).click();
-  await page.getByRole('button', { name: '+' }).click();
+  await page.getByRole('button', { name: '+', exact: true }).click();
   await page.getByRole('button', { name: '2' }).click();
   await page.getByRole('button', { name: '=' }).click();
 
